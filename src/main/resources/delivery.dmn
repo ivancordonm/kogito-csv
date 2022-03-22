@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="ns0" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_F1EC7F29-CF4F-4829-BA78-4A8A06FEDA2E" name="delivery" expressionLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="ns0">
+  <dmn:extensionElements/>
+  <dmn:itemDefinition id="_1BCA967D-8622-426C-9E71-B6B810BDB580" name="tClient" isCollection="false">
+    <dmn:itemComponent id="_7DCF0C18-36BF-4D5A-BAC9-3FDB36408884" name="name" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_BCBC7E76-0B33-4FAD-9397-1F239D1F382F" name="tAddress" isCollection="false">
+      <dmn:itemComponent id="_37B9E4B9-86F8-46A4-A292-C4EFC42AB96A" name="country" isCollection="false">
+        <dmn:typeRef>string</dmn:typeRef>
+      </dmn:itemComponent>
+      <dmn:itemComponent id="_94662BB7-5C3B-4752-96E3-6F4229FA6D69" name="city" isCollection="false">
+        <dmn:typeRef>string</dmn:typeRef>
+      </dmn:itemComponent>
+      <dmn:itemComponent id="_5F0D35AC-ED6C-405F-9833-119F9BE0E447" name="PC" isCollection="false">
+        <dmn:typeRef>string</dmn:typeRef>
+      </dmn:itemComponent>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:inputData id="_CAC30E8F-C2E0-495D-BFB5-4D2601E4C322" name="Client">
+    <dmn:extensionElements/>
+    <dmn:variable id="_38C8AEFB-6B86-4902-ADD8-FF6B84A0C61B" name="Client" typeRef="tClient"/>
+  </dmn:inputData>
+  <dmn:businessKnowledgeModel id="_043596A7-5814-48FB-B690-49680FCC92B4" name="getPostalCode">
+    <dmn:extensionElements/>
+    <dmn:variable id="_4E2575CF-9D25-408D-AC96-54FDBF95277F" name="getPostalCode"/>
+    <dmn:encapsulatedLogic id="_CF221ED5-67B0-4D66-AA04-1BF9EACD5865" kind="Java">
+      <dmn:formalParameter id="_0AA79EE1-DEDA-4FD4-AAC5-BE6A2E673044" name="client" typeRef="tClient"/>
+      <dmn:context id="_7BA090B5-4D8A-4D12-880F-1E6F0C874792">
+        <dmn:contextEntry>
+          <dmn:variable id="_7A549BE1-CA21-44BF-BEDB-A22037A90250" name="class" typeRef="string"/>
+          <dmn:literalExpression id="_8FE6C2B0-FAC9-4E2C-BE14-48F0BE0EF2F5">
+            <dmn:text>org.acme.service.PostalCodesService</dmn:text>
+          </dmn:literalExpression>
+        </dmn:contextEntry>
+        <dmn:contextEntry>
+          <dmn:variable id="_8266AE19-095D-48C0-B809-9650D8B2EC0A" name="method signature" typeRef="string"/>
+          <dmn:literalExpression id="_E6E87C8E-3F0E-432E-AFB6-FBAD84A781B3">
+            <dmn:text>getPostalCode</dmn:text>
+          </dmn:literalExpression>
+        </dmn:contextEntry>
+      </dmn:context>
+    </dmn:encapsulatedLogic>
+  </dmn:businessKnowledgeModel>
+  <dmn:decision id="_B89C0638-B399-45CE-9175-0A96256EB4CD" name="Complete Address">
+    <dmn:extensionElements/>
+    <dmn:variable id="_48A629D3-824D-4037-87C4-32020CEF5A31" name="Complete Address"/>
+    <dmn:informationRequirement id="_D3D73932-3EA6-4106-AD54-2B1A9B4AECD1">
+      <dmn:requiredInput href="#_CAC30E8F-C2E0-495D-BFB5-4D2601E4C322"/>
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_FEF09F85-2416-47E8-A95E-2181D4DCD571">
+      <dmn:requiredKnowledge href="#_043596A7-5814-48FB-B690-49680FCC92B4"/>
+    </dmn:knowledgeRequirement>
+    <dmn:context id="_AC2A07D3-17C3-4857-BB24-E16039146E8F">
+      <dmn:contextEntry>
+        <dmn:variable id="_1B2A96CA-5B75-40D1-99C1-26DB3BFE8E64" name="CP" typeRef="string"/>
+        <dmn:literalExpression id="_FA212E52-207F-422C-8FF0-6AC1C1D9699C">
+          <dmn:text>getPostalCode(Client)</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry>
+        <dmn:literalExpression id="_C311C5C5-F508-4F55-BE9F-91DD79B780F4">
+          <dmn:text>if Client.country == 'Spain' then CP else "00000" </dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_D7AD748F-C010-4F68-BB10-577A75C06028" name="DRG">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_7BA090B5-4D8A-4D12-880F-1E6F0C874792">
+            <kie:width>50</kie:width>
+            <kie:width>265</kie:width>
+            <kie:width>563</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_8FE6C2B0-FAC9-4E2C-BE14-48F0BE0EF2F5">
+            <kie:width>563</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_E6E87C8E-3F0E-432E-AFB6-FBAD84A781B3">
+            <kie:width>563</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_CF221ED5-67B0-4D66-AA04-1BF9EACD5865">
+            <kie:width>50</kie:width>
+            <kie:width>898</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_AC2A07D3-17C3-4857-BB24-E16039146E8F">
+            <kie:width>50</kie:width>
+            <kie:width>361</kie:width>
+            <kie:width>765</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_FA212E52-207F-422C-8FF0-6AC1C1D9699C">
+            <kie:width>765</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_C311C5C5-F508-4F55-BE9F-91DD79B780F4">
+            <kie:width>765</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape xmlns:p0="https://kiegroup.org/dmn/_9102E6B8-9974-463F-8AFF-9F989A80254A" id="dmnshape-drg-_CAC30E8F-C2E0-495D-BFB5-4D2601E4C322" dmnElementRef="p0:_CAC30E8F-C2E0-495D-BFB5-4D2601E4C322" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="365" y="421" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape xmlns:p1="https://kiegroup.org/dmn/_9102E6B8-9974-463F-8AFF-9F989A80254A" id="dmnshape-drg-_043596A7-5814-48FB-B690-49680FCC92B4" dmnElementRef="p1:_043596A7-5814-48FB-B690-49680FCC92B4" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="208" y="280" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape xmlns:p2="https://kiegroup.org/dmn/_9102E6B8-9974-463F-8AFF-9F989A80254A" id="dmnshape-drg-_B89C0638-B399-45CE-9175-0A96256EB4CD" dmnElementRef="p2:_B89C0638-B399-45CE-9175-0A96256EB4CD" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="497" y="174" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge xmlns:p3="https://kiegroup.org/dmn/_9102E6B8-9974-463F-8AFF-9F989A80254A" id="dmnedge-drg-_FEF09F85-2416-47E8-A95E-2181D4DCD571-AUTO-TARGET" dmnElementRef="p3:_FEF09F85-2416-47E8-A95E-2181D4DCD571">
+        <di:waypoint x="258" y="305"/>
+        <di:waypoint x="547" y="224"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge xmlns:p4="https://kiegroup.org/dmn/_9102E6B8-9974-463F-8AFF-9F989A80254A" id="dmnedge-drg-_D3D73932-3EA6-4106-AD54-2B1A9B4AECD1" dmnElementRef="p4:_D3D73932-3EA6-4106-AD54-2B1A9B4AECD1">
+        <di:waypoint x="415" y="446"/>
+        <di:waypoint x="547" y="224"/>
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>
